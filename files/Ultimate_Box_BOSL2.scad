@@ -1,3 +1,6 @@
+include <BOSL2/std.scad>
+include <BOSL2/metric_screws.scad>
+
 /* Box design originally by:
 ////////////////////////////////////////////////////////////////////
               -    FB Aka Heartman/Hearty 2016     -
@@ -120,7 +123,7 @@ FootDia = 8;
 FootHole = 2.2606; // tap size for #4 coarse-thread
 // - EXPERIMENTAL Screwless design
 Screwless = 0; // [0:Screws, 1:Screwless]
-FootFilet = FootHeight/4;
+FootFilet = FootHeight / 4;
 
 // Foot centers are specified as distance from PCB back-left corner.
 // X is along the "length" axis, and Y is along the "width" axis.
@@ -248,7 +251,7 @@ module FPanelText() {
 
 // Top shell holes
 module TShellHoles() {
-    translate([Length / 4, Width / 2, -0.1])
+    translate([Length / 4 * 3, Width / 2, -0.1])
         cylinder(d=20, h=Thick+.2, $fn=100);
 }
 
@@ -562,10 +565,10 @@ module PCB() {
     Produces a single foot for PCB mounting.
 */
 module foot(top=0) {
-    color(Couleur1) {
+    //color(Couleur1) 
         rotate_extrude($fn=100) {
             difference() {
-                union() {
+                #union() {
                     if (Screwless && top) { // Foot with TopMargin height
                         square([FootDia/2 + FootFilet, TopMargin]);
                     }
@@ -608,7 +611,7 @@ module foot(top=0) {
 
             }
         }
-    }
+    
 }
 
 
@@ -872,30 +875,33 @@ module BPanL() {
     }
 }
 
-color("white")
-    translate([Length / 4, Width / 2, Height - 14.45])
-        import("HC_SR501_PIR_v2.stl"); // 32.5 x 24.5 x 24.9
+// color("white")
+//     translate([Length / 4 * 3, Width / 2, Height - 14.45])
+//         import("HC_SR501_PIR_v2.stl"); // 32.5 x 24.5 x 24.9
 
-    // translate([30, Width / 2, 8]) rotate([0,0,180])
-    //     import("esp32_strip.stl"); // 49.35 x 26 x 12.6
+//     translate([30, Width / 2, 8])
+//         import("esp32_strip.stl"); // 49.35 x 26 x 12.6
 
 
 // Top shell
-if (TShell) {
-    TopShell();
-}
+// if (TShell) {
+//     TopShell();
+// }
 
-// Bottom shell
-if (BShell) {
-    BottomShell();
-}
+// // Bottom shell
+// if (BShell) {
+//     BottomShell();
+// }
 
-// Front panel
-if (FPanL) {
-   // FPanL();
-}
+// // Front panel
+// if (FPanL) {
+//    // FPanL();
+// }
 
-// Back panel
-if (BPanL) {
-    BPanL();
-}
+// // Back panel
+// if (BPanL) {
+//     BPanL();
+// }
+
+PCB();
+foot();
